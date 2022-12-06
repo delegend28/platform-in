@@ -1,0 +1,51 @@
+#  Task 1  - Improve the Terraform code to make it easier to add/update/remove services
+
+The assigned code was refactored and sectioned into individual environments (Development and production); Each environment is also sectioned to segregrate all services (Frontend, account, gateway, and payment). Thus making it easy for services and environments to be easily updated abd modified.
+
+#  Task 2  - Add a new environment called staging that run each micro service
+
+Since the individual environments (Development and production) runs all the services. The staging environment was configured to run each microservice using a terraform module template. This is illustrated by making use of the provided development environment credentials. 
+ ---- To run each environment: 
+            Edit the run.sh script at (line 29 )
+              pushd /vagrant/tf/staging   ---- for staging
+              pushd /vagrant/tf/staging   ---- for development
+              pushd /vagrant/tf/staging   ---- for production
+
+#  Task 3  - structure your code in a way that will segregrate environments
+
+The individual environments were segregrated into Development, staging, and production.
+Note: The staging environment was provisoned using provided credentials of the development environment
+
+
+#  Task 4  - Design decisions 
+ --- Staging environment was provisioned using credentials of the develpment environmnt because it is ideally the next phase after application developmnt
+
+ --- The services was also segregrated in the Development and production environments to allow ease of individual services modification
+
+ ----The variables were defined accordingly in the variable.tf file while .tfvars file was created for the development and production environments to ensure this ease of modification
+
+ ---- Credentials like password variables were also defined as type sensitive so that it isn't readable after being passed.
+
+ --- The staging environment was provisioned using a terraform module feature thus eliminating the need of task repetion in creating new commands and also ensuring consistency across environments
+
+ ---- Attempt was made to separate individual services into modules (Ref "Modules" folder), before passing the individual services as modules in the "staging-newtry" folder but no success yet. as i kept getting errors
+
+#  Task 5  How you code will fit into a CI/CD pipeline
+ Segregration of environment (Development and production) and services (Frontend, gateway, account, payment) respectively will allow for easy modification while the .tfvars file will ensure credentials are safely passed (by including more security features); and fast and consitent infrastructure provisioning.
+
+# Task 6 Describe anything beyond the scope of this task that you would consider when running this code in a real production environment
+- First the credentials can't be stored in the .tfvars file as it is unsafe and easily accesible. Hence, more secured features like encrpytion will be considered for all credentials.
+
+- The vault token which was passed as a variable and stored in .tfvars for the safe of this task. will be configyred as a required credential whose value can only be put in by the user during time of access. Also, such tokens will have a limited time of access.
+
+- In a production environment i will also ensure restrictions are in place to limit accessibility to terraform state files, the terraform variable branch; and also the repository where the repository where configurations are stored for security reasons.
+
+# Task 7 All environments (including staging) should be created when you run vagrant up and the apps should print service started and the secret data in their logs
+
+- The service started was configured by place the "service started" as the last command in the run.sh script
+- Vagrant up will start each environmnet upon modifying the run.sh script
+      ---- To run each environment: 
+            Edit the run.sh script at (line 29 )
+              pushd /vagrant/tf/staging   ---- for staging
+              pushd /vagrant/tf/staging   ---- for development
+              pushd /vagrant/tf/staging   ---- for production

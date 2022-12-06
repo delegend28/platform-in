@@ -11,6 +11,7 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.1.1/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 
 echo Installing terraform onto machine...
+
 mkdir -p "${HOME}/bin"
 sudo apt-get update && sudo apt-get install -y unzip jq
 pushd "${HOME}/bin"
@@ -26,7 +27,8 @@ docker build ./services/payment -t form3tech-oss/platformtest-payment
 docker-compose up -d
 popd
 echo Applying terraform script
-pushd /vagrant/tf
+pushd /vagrant/tf/development
 terraform init -upgrade
 terraform apply -auto-approve
+echo service started
 popd
